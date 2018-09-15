@@ -33,11 +33,16 @@
 <script lang="ts">
 
     import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
+    import { Dropdown,DropdownMenu,DropdownItem } from 'element-ui'
 
     import { debounce } from 'lodash'
     import { Loading } from 'element-ui'
 
     import HeaderSearch from '@/components/global/search'
+
+    Vue.use(Dropdown)
+    Vue.use(DropdownMenu)
+    Vue.use(DropdownItem)
 
     const langs=[
         {
