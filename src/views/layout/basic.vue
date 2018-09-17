@@ -6,19 +6,6 @@
             </el-header>
             <el-main :style="{'padding-bottom': 0}">
                 <router-view :breadcrumbNameMap="breadcrumbNameMap" />
-                <el-footer height="auto" :style="{padding: 0, flex: '0 0 auto'}">
-                    <global-footer :links="footerLinks">
-                        <template slot="copyright">
-                            <div>
-                                Copyright
-                                <ant-icon type="copyright" /> 2018 Daizhe
-                            </div>
-                        </template>
-                        <template slot="github-slot">
-                            <ant-icon class="github-icon" type="github" />
-                        </template>
-                    </global-footer>
-                </el-footer>
             </el-main>
         </el-container>
     </el-container>
@@ -27,16 +14,14 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
 
-    import { Container,Header,Main,Footer } from 'element-ui'
+    import { Container,Header,Main } from 'element-ui'
 
-    import GlobalFooter from 'components/global/footer'
     import GlobalHeader from '@/components/global/header.vue'
     import AntIcon from '@/components/common/anticon'
 
     Vue.use(Container)
     Vue.use(Header)
     Vue.use(Main)
-    Vue.use(Footer)
 
     const footerLinks = [
         {
@@ -50,7 +35,6 @@
     @Component({
         components:{
             GlobalHeader,
-            GlobalFooter,
             AntIcon
         }
     })

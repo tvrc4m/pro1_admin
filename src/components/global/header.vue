@@ -1,7 +1,12 @@
 <template>
     <div class="global-header">
-        <div class="left"></div>
-        <header-search class="action search" :placeholder="$t('search.placeholder')" v-model="searchValue" :data="[]" />
+        <div class="left">
+            <el-dropdown class="action" v-for="action in actions">
+                <span class="action account" @click="$router.push(action.href)">
+                    <span class="name">{{action.name}}</span>
+                </span>
+            </el-dropdown>
+        </div>
         <div class="right">
             <!-- <notice-icon class="action notice" :tabs="noticeTabs"></notice-icon>
             <el-dropdown v-if="currentUser.name" class="action" @command="onMenuClick">
@@ -18,14 +23,6 @@
             <div v-else class="action loading-wrapper">
                 <div class="loading" v-loading="true"></div>
             </div> -->
-            <el-dropdown  class="lang" @command="onLangClick">
-                <span class="account">
-                    <span class="name el-dropdown-link">{{selectedLang}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for="lang in langs" :command="lang.value">{{lang.name}}</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
         </div>
     </div>
 </template>
@@ -33,60 +30,35 @@
 <script lang="ts">
 
     import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
-    import { Dropdown,DropdownMenu,DropdownItem } from 'element-ui'
-
-    import { debounce } from 'lodash'
-    import { Loading } from 'element-ui'
-
-    import HeaderSearch from '@/components/global/search'
+    import { Dropdown,DropdownMenu,DropdownItem,Loading } from 'element-ui'
 
     Vue.use(Dropdown)
     Vue.use(DropdownMenu)
     Vue.use(DropdownItem)
-
-    const langs=[
-        {
-            name:"中文",
-            value:"zh"
-        },
-        {
-            name:"English",
-            value:"en"
-        },
-    ];
-
     Vue.use(Loading)
 
-    @Component({
-        components:{
-            HeaderSearch,
+    const actions=[
+        {
+            name:"用户",
+            href:"/users"
+        },
+        {
+            name:"作者",
+            href:"/author"
+        },
+        {
+            name:"内容",
+            href:"/content"
         }
-    })
+    ]
+
+    @Component({})
     export default class GlobalHeader extends Vue{
 
-        @Provide() searchValue=''
-        @Provide() langs=langs;
-        @Provide() selectedLang='中文';
-        
-        onLangClick(command:string){
-            for(let index in this.langs){
-                if(command==this.langs[index].value){
-                    this.selectedLang=this.langs[index].name
-                    break;
-                }
-            }
-            this.$emit('lang-click',command)
-        }
+        @Provide() actions=actions
 
         mounted(){
-            var lang=localStorage.getItem("lang")
-            if(lang){
-                this.langs.forEach(item=>{
-                    if(item.value==lang){
-                        this.selectedLang=item.name
-                    }
-                })
-            }
+            
         }
 
     }
@@ -163,6 +135,7 @@
             display: flex;
             align-items: center;
             text-align: center;
+            padding-left:100px;
             .item{
                 cursor: pointer;
                 padding: 0 12px;

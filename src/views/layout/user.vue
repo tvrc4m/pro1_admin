@@ -1,63 +1,16 @@
 <template>
     <div class="container">
         <div class="content">
-            <div class="top">
-                <div class="header">
-                  <router-link to="/">
-                        <img alt="logo" class="logo" :src="logo" />
-                        <span class="title">xeEOS</span>
-                  </router-link>
-                </div>
-                <div class="desc">EOS区块浏览器</div>
-            </div>
             <router-view></router-view>
         </div>
-        <global-footer :links="links">
-            <template slot="copyright">
-                <div>
-                  Copyright
-                  <ant-icon type="copyright" /> 2018 Daizhe
-                </div>
-            </template>
-        </global-footer>
     </div>
 </template>
 
 <script lang="ts">
     import Vue from 'vue'
-
-    import GlobalFooter from 'components/global/footer'
-    import AntIcon from '@/components/common/anticon'
-
-    import logo from 'assets/logo.png'
-
-    const links = [
-        {
-            key: 'help',
-            title: '帮助',
-            href: ''
-        },
-        {
-            key: 'privacy',
-            title: '隐私',
-            href: ''
-        },
-        {
-            key: 'terms',
-            title: '条款',
-            href: ''
-        }
-    ]
-
+    
     export default Vue.extend({
         name: 'UserLayout',
-        components:{GlobalFooter,AntIcon},
-        data() {
-            return {
-                logo,
-                links
-            }
-        }
     })
 </script>
 

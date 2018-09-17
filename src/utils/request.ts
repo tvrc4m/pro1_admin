@@ -11,6 +11,7 @@ const service = axios.create({
 
 service.interceptors.request.use(request=>{
     request.data.token=localStorage.getItem("token")
+    console.log(request.data)
     request.data=qs.stringify(request.data)
     return request
 },error=>{
@@ -19,27 +20,27 @@ service.interceptors.request.use(request=>{
 
 service.interceptors.response.use(
     (response) => {
-        console.log(response)
         if(response.status==200){
-            if(response.data['err_no']!=0){
-                if(response.data['err_no']==1001){
+            if(response.data.err_no!=0){
+                if(response.data.err_no==1001){
                     router.push("/user/login")
-                }else if(response.data['err_no']==1002){
-                    this.confirm("登录已失效,需要重新登录","登录提示",{
-                    }).then(()=>{
+                }else if(response.data.err_no==1002){
+                    MessageBox.confirm("登录已失效,需要重新登录","登录提示",{}).then(()=>{
                         router.push("/user/login")
-                    })          
+                    })
+                    return Promise.reject("登录失效")
                 }else{
-                    this.$message({
-                        message:response.data['err_msg'],
+                    Message({
+                        message:response.data.err_msg,
                         type:"error"
                     })
+                    return Promise.reject(response.data.err_msg)
                 }
             }else{
                 return response.data
             }
         }else{
-            this.$message({
+            Message({
                 message:"请求异常",
                 type:"error"
             })

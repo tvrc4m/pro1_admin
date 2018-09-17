@@ -1,11 +1,11 @@
 <template>
     <div class="main">
-        <el-form class="login" @submit="handleSubmit">
+        <el-form class="login">
             <el-tabs class="tabs" v-model="type">
                 <el-tab-pane name="account" label="账号密码登录">
-                    <template v-if="login && login.status === 'error' && login.type === 'account' && !submitting">
+                    <!-- <template v-if="login && login.status === 'error' && login.type === 'account' && !submitting"> -->
                         <!-- <el-alert :style="{marginBottom: '24px'}"  :title="message"  type="error" show-icon /> -->
-                    </template>
+                    <!-- </template> -->
                     <el-form-item>
                         <el-input v-model="form.nick" prefix-icon="anticon anticon-user" placeholder="用户名"></el-input>
                     </el-form-item>
@@ -13,29 +13,10 @@
                         <el-input v-model="form.password" prefix-icon="anticon anticon-lock" type="password" placeholder="密码"></el-input>
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane name="mobile" label="手机号登录">
-                    <el-form-item>
-                        <el-input v-model="form.phone" prefix-icon="anticon anticon-mobile" type="text" placeholder="手机号"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-input v-model="form.capture" prefix-icon="anticon anticon-mail" type="text" placeholder="短信验证码"></el-input>
-                    </el-form-item>
-                </el-tab-pane>
             </el-tabs>
-            <div>
-                <el-checkbox v-model="autoLogin">自动登录</el-checkbox>
-                <a :style="{float: 'right'}" href="">忘记密码</a>
-            </div>
             <el-form-item>
-                <el-button size="large" class="submit" type="primary" native-type="submit">登录</el-button>
+                <el-button size="large" class="submit" type="primary" @click="userLogin">登录</el-button>
             </el-form-item>
-            <div class="other">
-                其他登录方式
-                <ant-icon class="icon" type="wechat" />
-                <ant-icon class="icon" type="qq" />
-                <ant-icon class="icon" type="weibo" />
-                <router-link class="register"  to="/user/register">注册账户</router-link>
-            </div>
         </el-form>
     </div>
 </template>
@@ -44,6 +25,7 @@
     import Vue from 'vue'
     import { Checkbox,Form,FormItem,Input,Button,Tabs,TabPane,Alert } from 'element-ui'
     import AntIcon from '@/components/common/anticon'
+    import {login} from '@/api/admin'
 
     Vue.use(Checkbox)
     Vue.use(Tabs)
@@ -66,34 +48,26 @@
                 form:{
                     nick:'',
                     password:'',
-                    phone:'',
-                    capture:''
                 }
             }
         },
         computed: {
-            login(): any {
-                return this.$store.state.login
-            }
+            // login(): any {
+            //     return this.$store.state.login
+            // }
         },
         methods: {
-            handleSubmit(err: boolean, values: any) {
-                const { type } = this
-                console.log('User/Login, handleSubmit, values:', values)
-                if (!err) {
+            userLogin() {
                     this.submitting = true
-                    this.$store
-                    .dispatch('login/login', {
-                        type,
-                        ...values
+                    login(this.form.nick,this.form.password).then(data=>{
+                        localStorage.setItem("token",data.data.token)
+                        this.$router.push("/")
+                    }).catch(err=>{
+                        this.$message({
+                            message:err,
+                            type:"error"
+                        })
                     })
-                    .then(() => {
-                        this.submitting = false
-                    })
-                    .catch(() => {
-                        this.submitting = false
-                    })
-                }
             }
         }
     })

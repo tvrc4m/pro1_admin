@@ -5,20 +5,14 @@
 </template>
 
 <script lang="ts">
-    import {
-        Row,
-        Col,
-    } from 'element-ui'
+    import { Row,Col } from 'element-ui'
 
     import formatMixin from '@/mixin/format'
 
     import { Component,Provide,Vue } from 'vue-property-decorator'
 
-    import { getTimeDistance } from 'utils/utils'
-    
     Vue.use(Row)
     Vue.use(Col)
-
 
     @Component({
         components:{
