@@ -44,11 +44,11 @@
         },
         {
             name:"作者",
-            href:"/author"
+            href:"/authors"
         },
         {
             name:"内容",
-            href:"/content"
+            href:"/contents"
         }
     ]
 

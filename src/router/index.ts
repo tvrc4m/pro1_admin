@@ -11,6 +11,9 @@ const login=()=>import('@/views/user/login')
 const UserList=()=>import('@/views/user/index')
 const UserForm=()=>import('@/views/user/form')
 
+const AuthorList=()=>import('@/views/author/index')
+const AuthorForm=()=>import('@/views/author/form')
+
 
 const routes = [
     {
@@ -27,11 +30,27 @@ const routes = [
             },
             {
                 path:"user/add",
-                component:UserForm
+                component:UserForm,
+                name:"userAdd"
             },
             {
                 path:"user/edit/:uid",
-                component:UserForm
+                component:UserForm,
+                name:"userEdit"
+            },
+            {
+                path:"authors",
+                component:AuthorList
+            },
+            {
+                path:"author/add",
+                component:AuthorForm,
+                name:"authorAdd"
+            },
+            {
+                path:"author/edit/:author_id",
+                component:AuthorForm,
+                name:"authorEdit"
             }
         ]
     },

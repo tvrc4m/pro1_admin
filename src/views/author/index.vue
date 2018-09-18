@@ -1,26 +1,26 @@
 <template>
     <div>
         <el-row style="margin-bottom:20px;float:right;">
-            <el-button type="primary" size="small" @click="goUserAdd">新增账户</el-button>
+            <el-button type="primary" size="small" @click="goAuthorAdd">新增作者</el-button>
         </el-row>
-        <el-table :data="users" :fit="true" :stripe="true">
-            <el-table-column prop="id" label="UID" width="100px" align="center" :sortable="true"></el-table-column>
-            <el-table-column prop="phone" label="手机号" width="160px" align="center"></el-table-column>
+        <el-table :data="authors" :fit="true" :stripe="true">
+            <el-table-column prop="id" label="ID" width="100px" align="center" :sortable="true"></el-table-column>
+            <el-table-column prop="avatar" label="头像" align="center">
+                <template slot-scope="scope">
+                    <img :src="scope.row.avatar" alt="" style="width: 30px;height: 30px" />
+                </template>
+            </el-table-column>
+            <el-table-column prop="name" label="作者" align="center"></el-table-column>
             <el-table-column label="创建时间" align="center" width="180px">
                 <template slot-scope="scope">
                     <span>{{scope.row.create_time}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="订阅的作者" align="center" :sortable="true" :sort-method="sortBySubscribe">
-                <template slot-scope="scope">
-                    <span>查看</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
                     <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
-                    <el-button type="success" size="mini" @click="subscribe(scope.row.id)">订阅作者</el-button>
+                    <el-button type="success" size="mini" @click="subscribe(scope.row.id)">订阅码</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -31,7 +31,7 @@
     import { Component,Provide,Vue } from 'vue-property-decorator'
     import { Row,Col,Button,Table,TableColumn } from 'element-ui'
 
-    import {getUsers,delUser} from '@/api/user'
+    import {getAuthors,delAuthor} from '@/api/author'
 
     Vue.use(Row)
     Vue.use(Col)
@@ -39,9 +39,11 @@
     Vue.use(Table)
     Vue.use(TableColumn)
 
-    type User={
+    type Author={
         id:Number,
-        phone:String,
+        name:String,
+        avatar:String,
+        status:Number,
         date_add:Number,
         create_time:String
     }
@@ -52,16 +54,16 @@
         },
         mixins:[]
     })
-    export default class UserIndex extends Vue{
+    export default class AuthorIndex extends Vue{
 
-       @Provide() users:Array<User>=[]
+       @Provide() authors:Array<Author>=[]
 
-       goUserAdd(){
-            this.$router.push("/user/add")
+       goAuthorAdd(){
+            this.$router.push("/author/add")
        }
 
-       edit(uid:any){
-            this.$router.push({name:"userEdit",params:{uid:uid}})
+       edit(author_id:any){
+            this.$router.push({name:"authorEdit",params:{author_id:author_id}})
        }
 
        del(uid:Number){
@@ -69,8 +71,8 @@
             // this.$confirm("是否确定要删除该用户","提示",{
             //     showCancelButton:true
             // }).then(()=>{
-            //     delUser(uid).then(data=>{
-            //         this.users=this.users.filter(item=>{
+            //     delAuthor(uid).then(data=>{
+            //         this.authors=this.authors.filter(item=>{
             //             if(item.id!=uid){
             //                 return true
             //             }
@@ -86,8 +88,8 @@
        }
 
        mounted(){
-            getUsers().then(data=>{
-                this.users=data.data
+            getAuthors().then(data=>{
+                this.authors=data.data
             })
        }
 

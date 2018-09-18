@@ -8,7 +8,7 @@
                 <el-input type="text" v-model="user.password" autocomplete="off" style="width: 260px;"></el-input>
             </el-form-item>
             <div style="text-align: center;">
-                <el-button type="primary" size="small" @click="addUserFunc">添加</el-button>
+                <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
             </div>
         </el-form>
     </div>
@@ -16,7 +16,7 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
     import { Form,FormItem,Input,Button } from 'element-ui'
-    import { addUser } from '@/api/user'
+    import { addUser,getUser,editUser } from '@/api/user'
 
     Vue.use(Form)
     Vue.use(FormItem)
@@ -24,6 +24,7 @@
     Vue.use(Button)
 
     type User={
+        id:Number,
         phone:String,
         password:String
     }
@@ -31,20 +32,36 @@
     @Component({})
     export default class UserForm extends Vue{
 
-        @Provide() user:User={phone:'',password:''}
+        @Provide() user:User={id:0,phone:'',password:''}
+        @Provide() is_add:Boolean=false
 
-        addUserFunc(){
-            addUser(this.user).then(data=>{
-                console.log('adduser',data)
-                this.$router.push("/users")
-            })
+        get btnname():String{
+            return this.is_add?"添加":"编辑"
+        }
+
+        add(){
+            if(this.is_add){
+                addUser(this.user).then(data=>{
+                    console.log('adduser',data)
+                    this.$router.push("/users")
+                })
+            }else{
+                editUser(this.user).then(data=>{
+                    console.log('edituser',data)
+                    this.$router.push("/users")
+                })
+            }
         }
 
         mounted(){
-
             if(this.$route.params.uid){
-
-
+                getUser(parseInt(this.$route.params.uid)).then(data=>{
+                    console.log(data)
+                    this.user=data.data
+                })
+                this.is_add=false
+            }else{
+                this.is_add=true
             }
         }
     }

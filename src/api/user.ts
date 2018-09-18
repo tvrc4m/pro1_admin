@@ -4,6 +4,12 @@ import req from '@/utils/request'
 export function getUsers(params={}){
     return req.post(process.env.API_URL+"/api/admin/user",params)
 }
+
+// 获取用户详情
+export function getUser(uid:Number){
+    return req.post(process.env.API_URL+"/api/admin/user/index/detail",{uid})
+}
+
 // 添加新用户
 export function addUser(params={}){
     return req.post(process.env.API_URL+"/api/admin/user/index/add",params)
@@ -15,6 +21,7 @@ export function editUser(params={}){
 }
 
 // 删除用户
-export function delUser(uid){
+export function delUser(uid:Number){
+
     return req.post(process.env.API_URL+"/api/admin/user/index/del",{uid})
 }
