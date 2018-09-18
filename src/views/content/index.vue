@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="card-header" slot="header">
-            <span class="title">作者列表</span>
+            <span class="title">内容列表</span>
             <div class="actions">
-                <el-button type="text" size="small" @click="goAuthorAdd">新增作者</el-button>
+                <el-button type="text" size="small" @click="add">新增内容</el-button>
             </div>
         </div>
         <el-table :data="authors" :fit="true" :stripe="true">
@@ -61,8 +61,8 @@
 
        @Provide() authors:Array<Author>=[]
 
-       goAuthorAdd(){
-            this.$router.push("/author/add")
+       add(){
+            this.$router.push("/content/add")
        }
 
        edit(author_id:any){

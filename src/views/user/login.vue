@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div @keyup.enter="userLogin" class="main">
         <el-form class="login">
             <el-tabs class="tabs" v-model="type">
                 <el-tab-pane name="account" label="账号密码登录">
@@ -23,7 +23,7 @@
 
 <script lang="ts">
     import Vue from 'vue'
-    import { Checkbox,Form,FormItem,Input,Button,Tabs,TabPane,Alert } from 'element-ui'
+    import { Checkbox,Form,FormItem,Input,Button,Tabs,TabPane,Alert,Message } from 'element-ui'
     import AntIcon from '@/components/common/anticon'
     import {login} from '@/api/admin'
 
@@ -58,12 +58,26 @@
         },
         methods: {
             userLogin() {
+                    if(!this.form.nick){
+                        Message({
+                            type:"error",
+                            message:"请输入昵称"
+                        })
+                        return false
+                    }
+                    if(!this.form.password){
+                        Message({
+                            type:"error",
+                            message:"请输入密码"
+                        })
+                        return false
+                    }
                     this.submitting = true
                     login(this.form.nick,this.form.password).then(data=>{
                         localStorage.setItem("token",data.data.token)
-                        this.$router.push("/")
+                        this.$router.push("/users")
                     }).catch(err=>{
-                        this.$message({
+                        Message({
                             message:err,
                             type:"error"
                         })

@@ -5,7 +5,11 @@
                 <global-header :logo="logo" :current-user="currentUser" @menu-click="handleMenuClick" @lang-click="handleLangClick"></global-header>
             </el-header>
             <el-main :style="{'padding-bottom': 0}">
-                <router-view :breadcrumbNameMap="breadcrumbNameMap" />
+                <el-card class="box-card">
+                    <router-view :breadcrumbNameMap="breadcrumbNameMap">
+                        <div slot="header"></div>    
+                    </router-view>
+                </el-card>
             </el-main>
         </el-container>
     </el-container>
@@ -14,7 +18,7 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
 
-    import { Container,Header,Main } from 'element-ui'
+    import { Container,Header,Main,Card } from 'element-ui'
 
     import GlobalHeader from '@/components/global/header.vue'
     import AntIcon from '@/components/common/anticon'
@@ -22,6 +26,7 @@
     Vue.use(Container)
     Vue.use(Header)
     Vue.use(Main)
+    Vue.use(Card)
 
     const footerLinks = [
         {
@@ -88,5 +93,25 @@
 
     .github-icon {
         font-size: 20px;
+    }
+</style>
+<style lang="scss">
+    .card-header{
+        height: 40px;
+        line-height: 40px;
+        margin-bottom:20px;
+        border-bottom:1px solid #f2f2f2;
+        .title{
+            font-size:16px;
+            font-weight: bold;
+        }
+        .actions{
+            font-size:12px;
+            float: right;
+            display:inline-block;
+            .el-button--text{
+                padding: 3px 0;
+            }
+        }
     }
 </style>

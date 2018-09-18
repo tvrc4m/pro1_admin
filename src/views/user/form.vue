@@ -1,5 +1,10 @@
 <template>
     <div class="form-container">
+        <div class="card-header" slot="header">
+            <span class="title" style="font-size:16px;font-weight: bold;">{{btnname}}用户</span>
+            <div class="actions">
+            </div>
+        </div>
         <el-form ref="user" :model="user" label-width="100px" :inline="true" style="text-align: center;">
             <el-form-item label="手机号" prop="phone" style="display: block;">
                 <el-input type="text" v-model="user.phone" autocomplete="off" style="width: 260px;"></el-input>

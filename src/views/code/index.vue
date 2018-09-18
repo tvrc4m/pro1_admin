@@ -1,30 +1,31 @@
 <template>
     <div>
         <div class="card-header" slot="header">
-            <span class="title">用户列表</span>
+            <span class="title">邀请码列表</span>
             <div class="actions">
-                <el-button type="text" size="small" @click="goUserAdd">新增账户</el-button>
+                <el-button type="text" size="small" @click="add">创建邀请码</el-button>
             </div>
         </div>
-        <el-table :data="users" :fit="true" :stripe="true">
-            <el-table-column prop="id" label="UID" width="100px" align="center" :sortable="true"></el-table-column>
-            <el-table-column prop="phone" label="手机号" width="160px" align="center"></el-table-column>
+        <el-table :data="codes" :fit="true" :stripe="true">
+            <el-table-column prop="id" label="ID" width="100px" align="center" :sortable="true"></el-table-column>
+            <el-table-column prop="code" label="邀请码" width="160px" align="center"></el-table-column>
+            <el-table-column prop="expired_time" label="过期时间" width="160px" align="center"></el-table-column>
             <el-table-column label="创建时间" align="center" width="180px">
                 <template slot-scope="scope">
                     <span>{{scope.row.create_time}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="订阅的作者" align="center" :sortable="true" :sort-method="sortBySubscribe">
+            <el-table-column label="关联的作者" align="center" :sortable="true" :sort-method="sortBySubscribe">
                 <template slot-scope="scope">
-                    <span>查看</span>
+                    <span v-for="author in scope.row.authors">{{author.name}},</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" size="mini" @click="del2(scope.row.id)">删除</el-button>&nbsp;|&nbsp;
-                    <el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>&nbsp;|&nbsp; 
+                    <el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>&nbsp;|&nbsp;
+                    <el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>&nbsp;|&nbsp;
                     <el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅作者</el-button>
-                </template>
+                </template>x
             </el-table-column>
         </el-table>
     </div>
@@ -34,7 +35,7 @@
     import { Component,Provide,Vue } from 'vue-property-decorator'
     import { Row,Col,Button,Table,TableColumn } from 'element-ui'
 
-    import {getUsers,delUser} from '@/api/user'
+    import { getCodes,delCode } from '@/api/code'
 
     Vue.use(Row)
     Vue.use(Col)
@@ -42,11 +43,17 @@
     Vue.use(Table)
     Vue.use(TableColumn)
 
-    type User={
+    type Code={
         id:Number,
-        phone:String,
+        code_id:Number,
+        code:String,
+        year:Number,
+        month:Number,
+        date_expired:Number,
         date_add:Number,
-        create_time:String
+        expired_time:String,
+        create_time:String,
+        authors:Array<{id:Number,name:String}>
     }
 
     @Component({
@@ -57,23 +64,23 @@
     })
     export default class UserIndex extends Vue{
 
-       @Provide() users:Array<User>=[]
+       @Provide() codes:Array<Code>=[]
 
-       goUserAdd(){
-            this.$router.push("/user/add")
+       add(){
+            this.$router.push("/code/add")
        }
 
        edit(uid:any){
-            this.$router.push({name:"userEdit",params:{uid:uid}})
+            this.$router.push({name:"codeEdit",params:{uid:uid}})
        }
 
-       del2(uid:any){
+       del(uid:Number){
             console.log(uid)
             // this.$confirm("是否确定要删除该用户","提示",{
             //     showCancelButton:true
             // }).then(()=>{
             //     delUser(uid).then(data=>{
-            //         this.users=this.users.filter(item=>{
+            //         this.codes=this.codes.filter(item=>{
             //             if(item.id!=uid){
             //                 return true
             //             }
@@ -89,8 +96,8 @@
        }
 
        mounted(){
-            getUsers().then(data=>{
-                this.users=data.data
+            getCodes().then(data=>{
+                this.codes=data.data
             })
        }
 

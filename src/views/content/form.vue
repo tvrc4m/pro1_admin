@@ -1,9 +1,8 @@
 <template>
     <div class="form-container">
         <div class="card-header" slot="header">
-            <span class="title">{{btnname}}作者</span>
-            <div class="actions">
-            </div>
+            <span class="title" style="font-size:16px;font-weight: bold;">{{btnname}}内容</span>
+            <div class="actions"></div>
         </div>
         <el-form ref="author" :model="author" label-width="100px" :inline="true" style="text-align: center;">
             <el-form-item label="作者名" prop="name" style="display: block;">

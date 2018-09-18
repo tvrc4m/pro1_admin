@@ -48,8 +48,12 @@
         },
         {
             name:"内容",
-            href:"/contents"
-        }
+            href:"/content"
+        },
+        {
+            name:"邀请码",
+            href:"/code"
+        },
     ]
 
     @Component({})
