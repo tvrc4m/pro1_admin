@@ -5,7 +5,6 @@ export function getAuthors(params={}){
     return req.post(process.env.API_URL+"/api/admin/author",params)
 }
 
-
 // 获取用户详情
 export function getAuthor(author_id:Number){
     return req.post(process.env.API_URL+"/api/admin/author/index/detail",{author_id})
@@ -23,6 +22,9 @@ export function editAuthor(params={}){
 
 // 删除用户
 export function delAuthor(author_id:Number){
-
     return req.post(process.env.API_URL+"/api/admin/author/index/del",{author_id})
+}
+// 获取所有作者
+export function allAuthors(){
+    return req.post(process.env.API_URL+"/api/admin/author/index/all",{})
 }

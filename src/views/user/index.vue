@@ -21,9 +21,9 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" size="mini" @click="del2(scope.row.id)">删除</el-button>&nbsp;|&nbsp;
-                    <el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>&nbsp;|&nbsp; 
-                    <el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅作者</el-button>
+                    [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
+                    [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>] 
+                    [<el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅作者</el-button>]
                 </template>
             </el-table-column>
         </el-table>
@@ -32,7 +32,7 @@
 
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox } from 'element-ui'
 
     import {getUsers,delUser} from '@/api/user'
 
@@ -67,21 +67,24 @@
             this.$router.push({name:"userEdit",params:{uid:uid}})
        }
 
-       del2(uid:any){
-            console.log(uid)
-            // this.$confirm("是否确定要删除该用户","提示",{
-            //     showCancelButton:true
-            // }).then(()=>{
-            //     delUser(uid).then(data=>{
-            //         this.users=this.users.filter(item=>{
-            //             if(item.id!=uid){
-            //                 return true
-            //             }
-            //         })
-            //     })
-            // }).catch(()=>{
+       del(uid:any){
+            MessageBox.confirm("是否确定要删除该用户","提示",{
+                showCancelButton:true
+            }).then(()=>{
+                delUser(uid).then(data=>{
+                    Message({
+                        type:"success",
+                        message:"删除成功"
+                    })
+                    this.users=this.users.filter(item=>{
+                        if(item.id!=uid){
+                            return true
+                        }
+                    })
+                })
+            }).catch(()=>{
                 
-            // })
+            })
        }
 
        sortBySubscribe(a,b){
@@ -98,6 +101,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
-    
+    .el-button + .el-button{
+        margin-left:0 !important;
+    }
 </style>

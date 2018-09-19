@@ -5,14 +5,14 @@
             <div class="actions">
             </div>
         </div>
-        <el-form ref="user" :model="user" label-width="100px" :inline="true" style="text-align: center;">
+        <el-form ref="user" :model="user" label-width="100px" :inline="true">
             <el-form-item label="手机号" prop="phone" style="display: block;">
                 <el-input type="text" v-model="user.phone" autocomplete="off" style="width: 260px;"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password" style="display: block;">
                 <el-input type="text" v-model="user.password" autocomplete="off" style="width: 260px;"></el-input>
             </el-form-item>
-            <div style="text-align: center;">
+            <div style="margin-left: 150px;">
                 <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
             </div>
         </el-form>

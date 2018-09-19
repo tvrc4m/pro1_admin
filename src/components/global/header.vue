@@ -1,11 +1,11 @@
 <template>
     <div class="global-header">
         <div class="left">
-            <el-dropdown class="action" v-for="action in actions">
+            <div class="actions" v-for="action in actions">
                 <span class="action account" @click="$router.push(action.href)">
                     <span class="name">{{action.name}}</span>
                 </span>
-            </el-dropdown>
+            </div>
         </div>
         <div class="right">
             <!-- <notice-icon class="action notice" :tabs="noticeTabs"></notice-icon>
@@ -140,6 +140,11 @@
             align-items: center;
             text-align: center;
             padding-left:100px;
+            .actions{
+                line-height:64px;
+                height:64px;
+                padding:0 5px;
+            }
             .item{
                 cursor: pointer;
                 padding: 0 12px;

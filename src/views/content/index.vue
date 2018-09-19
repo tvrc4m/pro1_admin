@@ -6,7 +6,7 @@
                 <el-button type="text" size="small" @click="add">新增内容</el-button>
             </div>
         </div>
-        <el-table :data="authors" :fit="true" :stripe="true">
+        <el-table :data="contents" :fit="true" :stripe="true">
             <el-table-column prop="id" label="ID" width="100px" align="center" :sortable="true"></el-table-column>
             <el-table-column prop="avatar" label="头像" align="center">
                 <template slot-scope="scope">
@@ -21,9 +21,9 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>&nbsp;|&nbsp;
-                    <el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>&nbsp;|&nbsp;
-                    <el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅码</el-button>
+                    [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
+                    [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>]
+                    [<el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅码</el-button>]
                 </template>
             </el-table-column>
         </el-table>
@@ -32,24 +32,15 @@
 
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox } from 'element-ui'
 
-    import {getAuthors,delAuthor} from '@/api/author'
+    import { getContents,getContent,delContent,TypeContent } from '@/api/content'
 
     Vue.use(Row)
     Vue.use(Col)
     Vue.use(Button)
     Vue.use(Table)
     Vue.use(TableColumn)
-
-    type Author={
-        id:Number,
-        name:String,
-        avatar:String,
-        status:Number,
-        date_add:Number,
-        create_time:String
-    }
 
     @Component({
         components:{
@@ -59,31 +50,34 @@
     })
     export default class AuthorIndex extends Vue{
 
-       @Provide() authors:Array<Author>=[]
+       @Provide() contents:Array<TypeContent>=[]
 
        add(){
             this.$router.push("/content/add")
        }
 
-       edit(author_id:any){
-            this.$router.push({name:"authorEdit",params:{author_id:author_id}})
+       edit(content_id:any){
+            this.$router.push({name:"contentEdit",params:{content_id:content_id}})
        }
 
-       del(uid:Number){
-            console.log(uid)
-            // this.$confirm("是否确定要删除该用户","提示",{
-            //     showCancelButton:true
-            // }).then(()=>{
-            //     delAuthor(uid).then(data=>{
-            //         this.authors=this.authors.filter(item=>{
-            //             if(item.id!=uid){
-            //                 return true
-            //             }
-            //         })
-            //     })
-            // }).catch(()=>{
+       del(content_id:Number){
+            MessageBox.confirm("是否确定要删除该内容","提示",{
+                showCancelButton:true
+            }).then(()=>{
+                delContent(content_id).then(data=>{
+                    Message({
+                        type:"success",
+                        message:"删除成功"
+                    })
+                    this.contents=this.contents.filter(item=>{
+                        if(item.id!=content_id){
+                            return true
+                        }
+                    })
+                })
+            }).catch(()=>{
                 
-            // })
+            })
        }
 
        sortBySubscribe(a,b){
@@ -91,8 +85,8 @@
        }
 
        mounted(){
-            getAuthors().then(data=>{
-                this.authors=data.data
+            getContents().then(data=>{
+                this.contents=data.data
             })
        }
 
@@ -100,6 +94,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '~theme/theme.scss';
-    
+    .el-button + .el-button{
+        margin-left:0 !important;
+    }
 </style>
