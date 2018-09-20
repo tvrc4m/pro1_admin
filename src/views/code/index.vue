@@ -1,10 +1,12 @@
 <template>
     <div>
         <div class="card-header" slot="header">
-            <span class="title">邀请码列表</span>
+            <span v-if="author.id" class="title">[{{author.name}}]的邀请码列表</span>
+            <span v-else class="title">邀请码列表</span>
             <div class="actions">
                 <el-button type="primary" size="small" @click="changeExpired">批量修改过期日期</el-button>
-                <el-button type="primary" size="small" @click="add">创建邀请码</el-button>
+                <el-button type="primary" size="small" @click="add">创建</el-button>
+                <el-button type="primary" size="small" @click="multiadd">批量创建</el-button>
             </div>
         </div>
         <el-table :data="codes" :fit="true" :stripe="true" @selection-change="selectChange">
@@ -32,7 +34,7 @@
             </el-table-column>
         </el-table>
         <el-dialog title="批量修改过期日期" :visible.sync="multiedit" width="30%">
-            <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="date_expired" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="date_expired" type="date" placeholder="选择日期" style="width: 100%"></el-date-picker>
             <span slot="footer" class="dialog-footer">
                 <el-button size="small" @click="multiedit=false">取 消</el-button>
                 <el-button size="small" type="primary" @click="doMultiEdit">确 定</el-button>
@@ -46,6 +48,7 @@
     import { Row,Col,Button,Table,TableColumn,Message,MessageBox,DatePicker,Dialog } from 'element-ui'
 
     import { getCodes,delCode,multiEdit,TypeCode } from '@/api/code'
+    import { getAuthor,TypeAuthor } from '@/api/author'
 
     Vue.use(Row)
     Vue.use(Col)
@@ -67,9 +70,15 @@
        @Provide() changed:Array<Number>=[]
        @Provide() multiedit:boolean=false
        @Provide() date_expired:String=''
+       @Provide() filter={author_id:0}
+       @Provide() author:TypeAuthor|any={}
 
        add(){
             this.$router.push("/code/add")
+       }
+
+       multiadd(){
+            this.$router.push({name:"multiAddCode"})
        }
 
        edit(code_id:any){
@@ -120,6 +129,14 @@
                     type:"success",
                     message:"修改成功"
                 })
+                this.codes.map(item=>{
+                    this.changed.forEach(id=>{
+                        if(item.id==id){
+                            item.expired_time=this.date_expired
+                        }
+                    })
+                    return item
+                })
                 this.multiedit=false
                 this.date_expired=''
             })
@@ -130,7 +147,14 @@
        }
 
        mounted(){
-            getCodes().then(data=>{
+            if(this.$route.query.author_id){
+                this.filter.author_id=parseInt(this.$route.query.author_id)
+                getAuthor(this.filter.author_id).then(data=>{
+                    this.author=data.data
+                })
+            }
+
+            getCodes(this.filter).then(data=>{
                 this.codes=data.data
             })
        }

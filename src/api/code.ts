@@ -3,6 +3,7 @@ import req from '@/utils/request'
 export type TypeCode={
     id:Number,
     code_id:Number,
+    lable?:String;
     user_id:Number,
     user_phone?:String,
     code:String,

@@ -1,5 +1,13 @@
 import req from '@/utils/request'
 
+export type TypeAuthor={
+    id:Number,
+    name:String,
+    avatar:String,
+    date_add:Number,
+    create_time?:String,
+}
+
 // 获取用户列表
 export function getAuthors(params={}){
     return req.post(process.env.API_URL+"/api/admin/author",params)

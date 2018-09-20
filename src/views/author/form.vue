@@ -5,11 +5,11 @@
             <div class="actions">
             </div>
         </div>
-        <el-form ref="author" :model="author" :inline="true" style="text-align: center;">
+        <el-form ref="author" :model="author" :inline="true" label-width="100px">
             <el-form-item label="作者名" prop="name" width="200px" style="display: block;">
                 <el-input type="text" v-model="author.name" autocomplete="off" style="width: 260px;"></el-input>
             </el-form-item>
-            <el-form-item label="头像" prop="avatar" width="200px" style="display: block;">
+            <el-form-item label="头像" prop="avatar" style="display: block;">
                 <el-upload
                   class="avatar-uploader"
                   :action="upload_url"
@@ -21,7 +21,7 @@
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <div style="text-align: center;">
+            <div style="margin-left: 120px;">
                 <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>
             </div>
         </el-form>
@@ -30,7 +30,7 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
     import { Form,FormItem,Input,Button,Upload,Message } from 'element-ui'
-    import { addAuthor,getAuthor,editAuthor } from '@/api/author'
+    import { addAuthor,getAuthor,editAuthor,TypeAuthor } from '@/api/author'
 
     Vue.use(Form)
     Vue.use(FormItem)
@@ -38,17 +38,10 @@
     Vue.use(Button)
     Vue.use(Upload)
 
-    type Author={
-        id:Number,
-        name:String,
-        avatar:String,
-        date_add:Number
-    }
-
     @Component({})
     export default class AuthorForm extends Vue{
 
-        @Provide() author:Author={id:0,name:'',avatar:'',date_add:0}
+        @Provide() author:TypeAuthor|any={}
         @Provide() is_add:Boolean=false
         @Provide() upload_url:String=process.env.API_URL+"/api/admin/content/upload/avatar"
         @Provide() upload_data={token:localStorage.getItem("token")}
@@ -100,15 +93,17 @@
     }
 </script>
 <style lang="scss" scoped>
-    .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-        border-color: #409EFF;
+    .avatar-uploader{
+         .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            &:hover{
+                border-color: #409EFF;
+            }
+        }
     }
     .avatar-uploader-icon {
         font-size: 28px;

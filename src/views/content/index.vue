@@ -1,19 +1,23 @@
 <template>
     <div>
         <div class="card-header" slot="header">
-            <span class="title">内容列表</span>
+            <span v-if="author.id" class="title">[{{author.name}}]的内容列表</span>
+            <span class="title" v-else>内容列表</span>
             <div class="actions">
-                <el-button type="text" size="small" @click="add">新增内容</el-button>
+                <el-button type="primary" size="small" @click="add">新增内容</el-button>
             </div>
         </div>
         <el-table :data="contents" :fit="true" :stripe="true">
-            <el-table-column prop="id" label="ID" width="100px" align="center" :sortable="true"></el-table-column>
-            <el-table-column prop="avatar" label="头像" align="center">
+            <el-table-column prop="id" label="ID" width="90px" align="center" :sortable="true"></el-table-column>
+            <el-table-column label="内容" align="center" width="90px">
                 <template slot-scope="scope">
-                    <img :src="scope.row.avatar" alt="" style="width: 30px;height: 30px" />
+                    <span v-if="scope.row.type==1">图文</span>
+                    <span v-else-if="scope.row.type==2">视频</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="作者" align="center"></el-table-column>
+            <el-table-column prop="url" label="内容" align="center"></el-table-column>
+            <el-table-column prop="password" label="密码" align="center" width="90px"></el-table-column>
+            <el-table-column v-if="!author.id" prop="author_name" label="作者" align="center"></el-table-column>
             <el-table-column label="创建时间" align="center" width="180px">
                 <template slot-scope="scope">
                     <span>{{scope.row.create_time}}</span>
@@ -23,7 +27,6 @@
                 <template slot-scope="scope">
                     [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
                     [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>]
-                    [<el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅码</el-button>]
                 </template>
             </el-table-column>
         </el-table>
@@ -35,6 +38,7 @@
     import { Row,Col,Button,Table,TableColumn,Message,MessageBox } from 'element-ui'
 
     import { getContents,getContent,delContent,TypeContent } from '@/api/content'
+    import { TypeAuthor,getAuthor } from '@/api/author'
 
     Vue.use(Row)
     Vue.use(Col)
@@ -51,9 +55,11 @@
     export default class AuthorIndex extends Vue{
 
        @Provide() contents:Array<TypeContent>=[]
+       @Provide() author:TypeAuthor|any=[]
+       @Provide() filter={author_id:0}
 
        add(){
-            this.$router.push("/content/add")
+            this.$router.push({name:"contentAdd",query:{author_id:this.author.id}})
        }
 
        edit(content_id:any){
@@ -85,7 +91,13 @@
        }
 
        mounted(){
-            getContents().then(data=>{
+            if(this.$route.query.author_id){
+                this.filter.author_id=parseInt(this.$route.query.author_id)
+                getAuthor(this.filter.author_id).then(data=>{
+                    this.author=data.data
+                })
+            }
+            getContents(this.filter).then(data=>{
                 this.contents=data.data
             })
        }

@@ -3,7 +3,7 @@
         <div class="left">
             <div class="actions" v-for="action in actions">
                 <span class="action account" @click="$router.push(action.href)">
-                    <span class="name">{{action.name}}</span>
+                    {{action.name}}
                 </span>
             </div>
         </div>
@@ -143,7 +143,13 @@
             .actions{
                 line-height:64px;
                 height:64px;
+                width:80px;
                 padding:0 5px;
+                text-align:center;
+                .action{
+                    display:inline-block;
+                    width:100%;
+                }
             }
             .item{
                 cursor: pointer;

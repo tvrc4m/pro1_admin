@@ -17,6 +17,7 @@ const AuthorForm=()=>import('@/views/author/form')
 // 邀请码
 const CodeList=()=>import('@/views/code/index')
 const CodeForm=()=>import('@/views/code/form')
+const CodeFormMulti=()=>import('@/views/code/multi')
 
 // 内容
 const ContentList=()=>import('@/views/content/index')
@@ -62,12 +63,18 @@ const routes = [
             },
             {
                 path:"code",
-                component:CodeList
+                component:CodeList,
+                name:"codeList"
             },
             {
                 path:"code/add",
                 component:CodeForm,
                 name:"codeAdd"
+            },
+            {
+                path:"code/multi",
+                component:CodeFormMulti,
+                name:"multiAddCode"
             },
             {
                 path:"code/edit/:code_id",
@@ -76,7 +83,8 @@ const routes = [
             },
             {
                 path:"content",
-                component:ContentList
+                component:ContentList,
+                name:"contentList"
             },
             {
                 path:"content/add",

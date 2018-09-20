@@ -3,7 +3,7 @@
         <div class="card-header" slot="header">
             <span class="title">用户列表</span>
             <div class="actions">
-                <el-button type="text" size="small" @click="goUserAdd">新增账户</el-button>
+                <el-button type="primary" size="small" @click="goUserAdd">新增账户</el-button>
             </div>
         </div>
         <el-table :data="users" :fit="true" :stripe="true">

@@ -3,7 +3,7 @@
         <div class="card-header" slot="header">
             <span class="title">作者列表</span>
             <div class="actions">
-                <el-button type="text" size="small" @click="goAuthorAdd">新增作者</el-button>
+                <el-button type="primary" size="small" @click="goAuthorAdd">新增作者</el-button>
             </div>
         </div>
         <el-table :data="authors" :fit="true" :stripe="true">
@@ -23,6 +23,7 @@
                 <template slot-scope="scope">
                     [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
                     [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>]
+                    [<el-button type="text" size="mini" @click="content(scope.row.id)">内容</el-button>]
                     [<el-button type="text" size="mini" @click="subscribe(scope.row.id)">订阅码</el-button>]
                 </template>
             </el-table-column>
@@ -87,6 +88,14 @@
             }).catch(()=>{
                 
             })
+       }
+
+       content(author_id:any){
+            this.$router.push({"name":"contentList",query:{author_id}})
+       }
+
+       subscribe(author_id:any){
+            this.$router.push({"name":"codeList",query:{author_id:author_id}})
        }
 
        sortBySubscribe(a,b){

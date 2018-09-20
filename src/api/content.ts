@@ -3,11 +3,12 @@ import req from '@/utils/request'
 export type TypeContent={
     id:Number,
     author_id:Number,
+    author_name?:String,
     type:Number,
     password:String,
     url:String,
     date_add:Number,
-    create_time:String
+    create_time?:String
 }
 
 // 获取内容列表
@@ -31,6 +32,5 @@ export function delContent(content_id:Number){
 }
 // 修改
 export function editContent(content:TypeContent){
-    // let params={content_id:code.id,expired_date:code.date_expired,contents:code.contents}
-    // return req.post(process.env.API_URL+"/api/admin/content/index/edit",params)
+    return req.post(process.env.API_URL+"/api/admin/content/index/edit",content)
 }
