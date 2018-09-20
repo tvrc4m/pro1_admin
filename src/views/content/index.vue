@@ -30,12 +30,15 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn,Message,MessageBox } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination } from 'element-ui'
 
     import { getContents,getContent,delContent,TypeContent } from '@/api/content'
     import { TypeAuthor,getAuthor } from '@/api/author'
@@ -45,6 +48,7 @@
     Vue.use(Button)
     Vue.use(Table)
     Vue.use(TableColumn)
+    Vue.use(Pagination)
 
     @Component({
         components:{
@@ -56,7 +60,9 @@
 
        @Provide() contents:Array<TypeContent>=[]
        @Provide() author:TypeAuthor|any=[]
-       @Provide() filter={author_id:0}
+       @Provide() filter={author_id:0,page:1}
+       @Provide() total=0
+       @Provide() pageSize=20
 
        add(){
             this.$router.push({name:"contentAdd",query:{author_id:this.author.id}})
@@ -90,6 +96,18 @@
             console.log(a,b)
        }
 
+       listContents(){
+            getContents(this.filter).then(data=>{
+                this.contents=data.data.contents
+                this.total=data.data.total
+            })
+       }
+
+       changePage(page){
+            this.filter.page=page
+            this.listContents()
+       }
+
        mounted(){
             if(this.$route.query.author_id){
                 this.filter.author_id=parseInt(this.$route.query.author_id)
@@ -97,9 +115,7 @@
                     this.author=data.data
                 })
             }
-            getContents(this.filter).then(data=>{
-                this.contents=data.data
-            })
+            this.listContents()
        }
 
     }

@@ -33,6 +33,9 @@
                 </template>x
             </el-table-column>
         </el-table>
+        <div class="pagination">
+            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+        </div>
         <el-dialog title="批量修改过期日期" :visible.sync="multiedit" width="30%">
             <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="date_expired" type="date" placeholder="选择日期" style="width: 100%"></el-date-picker>
             <span slot="footer" class="dialog-footer">
@@ -45,7 +48,7 @@
 
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,DatePicker,Dialog } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,DatePicker,Dialog,Pagination } from 'element-ui'
 
     import { getCodes,delCode,multiEdit,TypeCode } from '@/api/code'
     import { getAuthor,TypeAuthor } from '@/api/author'
@@ -57,6 +60,7 @@
     Vue.use(TableColumn)
     Vue.use(DatePicker)
     Vue.use(Dialog)
+    Vue.use(Pagination)
 
     @Component({
         components:{
@@ -70,8 +74,10 @@
        @Provide() changed:Array<Number>=[]
        @Provide() multiedit:boolean=false
        @Provide() date_expired:String=''
-       @Provide() filter={author_id:0}
+       @Provide() filter={author_id:0,page:1}
        @Provide() author:TypeAuthor|any={}
+       @Provide() total=0
+       @Provide() pageSize=20
 
        add(){
             this.$router.push("/code/add")
@@ -146,6 +152,18 @@
             console.log(a,b)
        }
 
+       listCodes(){
+            getCodes(this.filter).then(data=>{
+                this.codes=data.data.codes
+                this.total=data.data.total
+            })
+       }
+
+       changePage(page){
+            this.filter.page=page
+            this.listCodes()
+       }
+
        mounted(){
             if(this.$route.query.author_id){
                 this.filter.author_id=parseInt(this.$route.query.author_id)
@@ -153,10 +171,7 @@
                     this.author=data.data
                 })
             }
-
-            getCodes(this.filter).then(data=>{
-                this.codes=data.data
-            })
+            this.listCodes()
        }
 
     }

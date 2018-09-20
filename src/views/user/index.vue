@@ -27,12 +27,15 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn,Message,MessageBox } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination } from 'element-ui'
 
     import {getUsers,delUser} from '@/api/user'
 
@@ -41,6 +44,7 @@
     Vue.use(Button)
     Vue.use(Table)
     Vue.use(TableColumn)
+    Vue.use(Pagination)
 
     type User={
         id:Number,
@@ -58,6 +62,8 @@
     export default class UserIndex extends Vue{
 
        @Provide() users:Array<User>=[]
+       @Provide() total=0
+       @Provide() pageSize=20
 
        goUserAdd(){
             this.$router.push("/user/add")
@@ -91,10 +97,19 @@
             console.log(a,b)
        }
 
-       mounted(){
-            getUsers().then(data=>{
-                this.users=data.data
+       listUsers(page=1){
+            getUsers({page}).then(data=>{
+                this.users=data.data.users
+                this.total=data.data.total
             })
+       }
+
+       changePage(page){
+            this.listUsers(page)
+       }
+
+       mounted(){
+            this.listUsers(1)
        }
 
     }

@@ -28,12 +28,15 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn,Message,MessageBox } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination } from 'element-ui'
 
     import {getAuthors,delAuthor} from '@/api/author'
 
@@ -42,6 +45,7 @@
     Vue.use(Button)
     Vue.use(Table)
     Vue.use(TableColumn)
+    Vue.use(Pagination)
 
     type Author={
         id:Number,
@@ -61,6 +65,8 @@
     export default class AuthorIndex extends Vue{
 
        @Provide() authors:Array<Author>=[]
+       @Provide() total=0
+       @Provide() pageSize=20
 
        goAuthorAdd(){
             this.$router.push("/author/add")
@@ -102,10 +108,19 @@
             console.log(a,b)
        }
 
-       mounted(){
-            getAuthors().then(data=>{
-                this.authors=data.data
+       listAuthors(page=1){
+            getAuthors({page}).then(data=>{
+                this.authors=data.data.authors
+                this.total=data.data.total
             })
+       }
+
+       changePage(page){
+            this.listAuthors(page)
+       }
+
+       mounted(){
+            this.listAuthors(1)
        }
 
     }
