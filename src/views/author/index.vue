@@ -77,7 +77,7 @@
        }
 
        del(author_id:Number){
-            MessageBox.confirm("是否确定要删除该用户","提示",{
+            MessageBox.confirm("是否确定要删除该作者","提示",{
                 showCancelButton:true
             }).then(()=>{
                 delAuthor(author_id).then(data=>{

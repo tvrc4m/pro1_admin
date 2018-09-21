@@ -6,6 +6,7 @@ export type TypeCode={
     lable?:String;
     user_id:Number,
     user_phone?:String,
+    count?:Number,
     code:String,
     year:Number,
     month:Number,
@@ -45,4 +46,9 @@ export function editCode(code:TypeCode){
 // 批量修改
 export function multiEdit(params){
     return req.post(process.env.API_URL+"/api/admin/author/code/multiedit",params)
+}
+
+// 批量添加
+export function multiAdd(params){
+    return req.post(process.env.API_URL+"/api/admin/author/code/multiadd",params)
 }

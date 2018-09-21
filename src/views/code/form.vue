@@ -15,13 +15,7 @@
                 <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="code.date_expired" type="date" placeholder="选择日期"></el-date-picker>
             </el-form-item>
             <el-form-item label="关联作者" style="display: block;">
-                <el-select
-                    v-model="code.authors"
-                    multiple
-                    filterable
-                    placeholder="关联作者"
-                    style="width: 500px"
-                    >
+                <el-select v-model="code.authors" multiple filterable placeholder="关联作者" style="width: 500px">
                     <el-option
                       v-for="author in authors"
                       :key="author.id"
@@ -39,7 +33,7 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
     import { Form,FormItem,Input,Button,DatePicker,Select,Option } from 'element-ui'
-    import { addCode,getCode,editCode,TypeCode } from '@/api/code'
+    import { addCode,getCode,editCode } from '@/api/code'
     import { allAuthors } from '@/api/author'
 
     Vue.use(Form)
@@ -49,6 +43,22 @@
     Vue.use(DatePicker)
     Vue.use(Select)
     Vue.use(Option)
+
+    export type TypeCode={
+        id:Number,
+        code_id:Number,
+        lable?:String;
+        user_id:Number,
+        user_phone?:String,
+        code:String,
+        year:Number,
+        month:Number,
+        date_expired:String,
+        date_add:Number,
+        expired_time:String,
+        create_time:String,
+        authors:Array<Number>
+    }
 
     @Component({})
     export default class CodeForm extends Vue{
@@ -81,7 +91,13 @@
                 getCode(parseInt(this.$route.params.code_id)).then(data=>{
                     console.log(data)
                     this.code=data.data
-                    this.$set(this.code,'authors',data.data.authors)
+                    // console.log(data.data.authors)
+                    // this.code.authors=[]
+                    // data.data.authors.forEach(author_id=>{
+                    //     console.log(author_id)
+                    //     this.code.authors.push(author_id)
+                    // }) 
+                    // this.$set(this.code,'authors',data.data.authors)
                     // this.code.authors=data.data.authors
                 })
                 this.is_add=false

@@ -1,7 +1,7 @@
 <template>
     <div class="global-header">
         <div class="left">
-            <div class="actions" v-for="action in actions">
+            <div v-for="action in actions" :class="['actions',{active:action.group==$route.meta.group}]">
                 <span class="action account" @click="$router.push(action.href)">
                     {{action.name}}
                 </span>
@@ -40,19 +40,24 @@
     const actions=[
         {
             name:"用户",
-            href:"/users"
+            href:"/users",
+            group:"user"
         },
         {
             name:"作者",
-            href:"/authors"
+            href:"/authors",
+            group:"author"
         },
         {
             name:"内容",
-            href:"/content"
+            href:"/content",
+            group:"content"
+
         },
         {
             name:"邀请码",
-            href:"/code"
+            href:"/code",
+            group:"code"
         },
     ]
 
@@ -90,6 +95,15 @@
                 background: $primary-1;
             }
         }
+        .actions{
+            &.popover-open,
+            &:hover {
+                background: $primary-1;
+            }
+            &.active{
+                background-color:$primary-1;
+            }
+        }
         .action {
             cursor: pointer;
             padding: 0 12px;
@@ -100,10 +114,6 @@
             > i {
                 font-size: 16px;
                 vertical-align: middle;
-            }
-            &.popover-open,
-            &:hover {
-                background: $primary-1;
             }
         }
         .lang {

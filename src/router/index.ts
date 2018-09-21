@@ -35,66 +35,105 @@ const routes = [
             },
             {
                 path:"users",
-                component:UserList
+                component:UserList,
+                meta:{
+                    group:"user"
+                }
             },
             {
                 path:"user/add",
                 component:UserForm,
-                name:"userAdd"
+                name:"userAdd",
+                meta:{
+                    group:"user"
+                }
             },
             {
                 path:"user/edit/:uid",
                 component:UserForm,
-                name:"userEdit"
+                name:"userEdit",
+                meta:{
+                    group:"user"
+                }
             },
             {
                 path:"authors",
-                component:AuthorList
+                component:AuthorList,
+                meta:{
+                    group:"author"
+                }
             },
             {
                 path:"author/add",
                 component:AuthorForm,
-                name:"authorAdd"
+                name:"authorAdd",
+                meta:{
+                    group:"author"
+                }
             },
             {
                 path:"author/edit/:author_id",
                 component:AuthorForm,
-                name:"authorEdit"
+                name:"authorEdit",
+                meta:{
+                    group:"author"
+                }
             },
             {
                 path:"code",
                 component:CodeList,
-                name:"codeList"
+                name:"codeList",
+                meta:{
+                    group:"code"
+                }
             },
             {
                 path:"code/add",
                 component:CodeForm,
-                name:"codeAdd"
+                name:"codeAdd",
+                meta:{
+                    group:"code"
+                }
             },
             {
                 path:"code/multi",
                 component:CodeFormMulti,
-                name:"multiAddCode"
+                name:"multiAddCode",
+                meta:{
+                    group:"code"
+                }
             },
             {
                 path:"code/edit/:code_id",
                 component:CodeForm,
-                name:"codeEdit"
+                name:"codeEdit",
+                meta:{
+                    group:"code"
+                }
             },
             {
                 path:"content",
                 component:ContentList,
-                name:"contentList"
+                name:"contentList",
+                meta:{
+                    group:"content"
+                }
             },
             {
                 path:"content/add",
                 component:ContentForm,
-                name:"contentAdd"
+                name:"contentAdd",
+                meta:{
+                    group:"content"
+                }
             },
             {
                 path:"content/edit/:content_id",
                 component:ContentForm,
-                name:"contentEdit"
+                name:"contentEdit",
+                meta:{
+                    group:"content"
+                }
             }
         ]
     },

@@ -13,7 +13,11 @@
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="ID" width="100px" align="center" :sortable="true"></el-table-column>
             <el-table-column prop="code" label="邀请码" width="160px" align="center"></el-table-column>
-            <el-table-column prop="user_id" label="用户ID" width="160px" align="center"></el-table-column>
+            <el-table-column prop="user_id" label="用户ID" width="160px" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.user_id>0">{{scope.row.user_id}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="user_phone" label="用户手机号" width="160px" align="center"></el-table-column>
             <el-table-column prop="expired_time" label="过期时间" width="160px" align="center"></el-table-column>
             <el-table-column label="创建时间" align="center" width="180px">
@@ -92,7 +96,7 @@
        }
 
        del(code_id:Number){
-            MessageBox.confirm("是否确定要删除该用户","提示",{
+            MessageBox.confirm("是否确定要删除该邀请码","提示",{
                 showCancelButton:true
             }).then(()=>{
                 delCode(code_id).then(data=>{
