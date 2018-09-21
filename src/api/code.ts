@@ -43,6 +43,11 @@ export function editCode(code:TypeCode){
     return req.post(process.env.API_URL+"/api/admin/author/code/edit",params)
 }
 
+// 分配邀请码给用户
+export function assginUser(uid:Number,code_id:Number){
+    return req.post(process.env.API_URL+"/api/admin/author/code/assign",{uid,code_id})  
+}
+
 // 批量修改
 export function multiEdit(params){
     return req.post(process.env.API_URL+"/api/admin/author/code/multiedit",params)

@@ -16,6 +16,7 @@
             <el-table-column prop="user_id" label="用户ID" width="160px" align="center">
                 <template slot-scope="scope">
                     <span v-if="scope.row.user_id>0">{{scope.row.user_id}}</span>
+                    <el-button  v-else type="primary" size="mini" @click="assignUser(scope.row)">分配用户</el-button>
                 </template>
             </el-table-column>
             <el-table-column prop="user_phone" label="用户手机号" width="160px" align="center"></el-table-column>
@@ -47,15 +48,30 @@
                 <el-button size="small" type="primary" @click="doMultiEdit">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog title="分配邀请码" :visible.sync="assign" width="30%">
+            <el-select ref="assign_select" v-model="user_id" filterable remote placeholder="请输入手机号" :remote-method="searchUser" :loading="searching" style="width: 100%">
+            <el-option
+              v-for="user in users"
+              :key="user.id"
+              :label="user.phone"
+              :value="user.id">
+            </el-option>
+          </el-select>
+            <span slot="footer" class="dialog-footer">
+                <el-button size="small" @click="assign=false">取 消</el-button>
+                <el-button size="small" type="primary" @click="doAssginUser">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,DatePicker,Dialog,Pagination } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,DatePicker,Dialog,Pagination,Select,Option } from 'element-ui'
 
-    import { getCodes,delCode,multiEdit,TypeCode } from '@/api/code'
+    import { getCodes,delCode,multiEdit,assginUser,TypeCode } from '@/api/code'
     import { getAuthor,TypeAuthor } from '@/api/author'
+    import { searchUser } from '@/api/user'
 
     Vue.use(Row)
     Vue.use(Col)
@@ -65,6 +81,8 @@
     Vue.use(DatePicker)
     Vue.use(Dialog)
     Vue.use(Pagination)
+    Vue.use(Select)
+    Vue.use(Option)
 
     @Component({
         components:{
@@ -82,6 +100,11 @@
        @Provide() author:TypeAuthor|any={}
        @Provide() total=0
        @Provide() pageSize=20
+       @Provide() assign:boolean=false
+       @Provide() searching:boolean=false
+       @Provide() user_id:any=''
+       @Provide() users:Array<{id:Number,name:String}>=[]
+       @Provide() assign_code:TypeCode
 
        add(){
             this.$router.push("/code/add")
@@ -89,6 +112,20 @@
 
        multiadd(){
             this.$router.push({name:"multiAddCode"})
+       }
+
+       assignUser(code:TypeCode){
+            this.assign=true
+            this.assign_code=code
+       }
+
+       doAssginUser(){
+            assginUser(this.user_id,this.assign_code.id).then(data=>{
+                this.assign_code.user_id=this.user_id
+                this.assign_code.user_phone=this.$refs.assign_select['query']
+                this.assign=false
+                this.user_id=''
+            })
        }
 
        edit(code_id:any){
@@ -119,6 +156,13 @@
             val.forEach(item=>{
                 this.changed.push(item.id)
             })
+       }
+
+       searchUser(val){
+            searchUser(val).then(data=>{
+                this.users=data.data
+            })
+            console.log(val)
        }
 
        changeExpired(){

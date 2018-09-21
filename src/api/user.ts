@@ -25,3 +25,7 @@ export function delUser(uid:Number){
 
     return req.post(process.env.API_URL+"/api/admin/user/index/del",{uid})
 }
+// 搜索用户，通过手机号
+export function searchUser(search:String){
+    return req.post(process.env.API_URL+"/api/admin/user/index/search",{search})
+}
