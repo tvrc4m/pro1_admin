@@ -16,11 +16,16 @@
             <el-table-column prop="code" label="邀请码" width="160px" align="center"></el-table-column>
             <el-table-column prop="user_phone" label="用户手机号" width="160px" align="center">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.user_id>0">{{scope.row.user_id}}</span>
+                    <span v-if="scope.row.user_id>0">{{scope.row.user_phone}}</span>
                     <el-button  v-else type="text" size="mini" @click="assignUser(scope.row)">[分配用户]</el-button>
                 </template>
             </el-table-column>
-            <el-table-column prop="expired_time" label="过期时间" width="160px" align="center"></el-table-column>
+            <el-table-column prop="expired_time" label="过期时间" width="160px" align="center">
+                <template slot-scope="scope">
+                    <i class="el-icon-time"></i>
+                    <span :class="{expired:scope.row.date_expired<current_timestamp}">{{scope.row.expired_time}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="创建时间" align="center" width="180px">
                 <template slot-scope="scope">
                     <span>{{scope.row.create_time}}</span>
@@ -104,7 +109,8 @@
        @Provide() searching:boolean=false
        @Provide() user_id:any=''
        @Provide() users:Array<{id:Number,name:String}>=[]
-       @Provide() assign_code:TypeCode
+       @Provide() assign_code:TypeCode|any={}
+       @Provide() current_timestamp=(new Date()).getTime()/1000
 
        add(){
             this.$router.push("/code/add")
@@ -262,5 +268,8 @@
 <style lang="scss" scoped>
     .el-button + .el-button{
         margin-left:0 !important;
+    }
+    .expired{
+        color:red;
     }
 </style>

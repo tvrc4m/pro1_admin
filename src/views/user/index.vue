@@ -86,7 +86,7 @@
        }
 
        subscribe(user_id:any){
-            this.$router.push({name:"authorList",query:{user_id}})
+            this.$router.push({name:"userAuthor",params:{uid:user_id}})
        }
 
        listUsers(page=1){

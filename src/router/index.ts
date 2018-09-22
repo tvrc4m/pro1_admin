@@ -11,6 +11,7 @@ const login=()=>import('@/views/user/login')
 // 用户
 const UserList=()=>import('@/views/user/index')
 const UserForm=()=>import('@/views/user/form')
+const UserAuthor=()=>import('@/views/user/author')
 // 作者
 const AuthorList=()=>import('@/views/author/index')
 const AuthorForm=()=>import('@/views/author/form')
@@ -37,6 +38,14 @@ const routes = [
             {
                 path:"users",
                 component:UserList,
+                meta:{
+                    group:"user"
+                }
+            }, 
+            {
+                path:"user/:uid/author",
+                component:UserAuthor,
+                name:"userAuthor",
                 meta:{
                     group:"user"
                 }

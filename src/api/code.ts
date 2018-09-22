@@ -62,3 +62,12 @@ export function multiDel(codes){
     return req.post(process.env.API_URL+"/api/admin/author/code/multidel",{codes})    
 }
 
+export function changeExpired(code_id:Number,expired_date){
+    return req.post(process.env.API_URL+"/api/admin/author/code/changeexipred",{code_id,expired_date})    
+}
+
+export function unassign(uid:Number,code_id:Number){
+    return req.post(process.env.API_URL+"/api/admin/author/code/unassign",{uid,code_id})     
+}
+
+

@@ -1,4 +1,5 @@
 import req from '@/utils/request'
+import { TypeCode } from "@/api/code"
 
 export type TypeAuthor={
     id:Number,
@@ -6,6 +7,7 @@ export type TypeAuthor={
     avatar:String,
     date_add:Number,
     create_time?:String,
+    codes?:Array<TypeCode>,
 }
 
 // 获取用户列表

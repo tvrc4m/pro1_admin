@@ -1,11 +1,9 @@
 <template>
     <div>
         <div class="card-header" slot="header">
-            <span class="title" v-if="user_id">[{{user.phone}}]订阅的作者列表</span>
-            <span class="title" v-else>作者列表</span>
+            <span class="title">作者列表</span>
             <div class="actions">
-                <el-button v-if="user_id" type="primary" size="small" @click="goSubcribeAuthor">新增订阅作者</el-button>
-                <el-button v-else type="primary" size="small" @click="goAuthorAdd">新增作者</el-button>
+                <el-button type="primary" size="small" @click="goAuthorAdd">新增作者</el-button>
             </div>
         </div>
         <el-table :data="authors" :fit="true" :stripe="true">
@@ -114,17 +112,10 @@
        }
 
        listAuthors(page=1){
-            if(this.user_id){
-                getUserSubscribeAuthor({page,user_id:this.user_id}).then(data=>{
-                    this.authors=data.data.authors
-                    this.total=data.data.total
-                })
-            }else{
-                 getAuthors({page}).then(data=>{
-                    this.authors=data.data.authors
-                    this.total=data.data.total
-                })
-            }
+            getAuthors({page}).then(data=>{
+                this.authors=data.data.authors
+                this.total=data.data.total
+            })
        }
 
        changePage(page){
@@ -146,12 +137,6 @@
        }
 
        mounted(){
-            if(this.$route.query.user_id){
-                this.user_id=parseInt(this.$route.query.user_id)
-                getUser(this.user_id).then(data=>{
-                    this.user=data.data
-                })
-            }
             this.listAuthors(1)
        }
 
