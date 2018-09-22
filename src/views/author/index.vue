@@ -1,9 +1,11 @@
 <template>
     <div>
         <div class="card-header" slot="header">
-            <span class="title">作者列表</span>
+            <span class="title" v-if="user_id">[{{user.phone}}]订阅的作者列表</span>
+            <span class="title" v-else>作者列表</span>
             <div class="actions">
-                <el-button type="primary" size="small" @click="goAuthorAdd">新增作者</el-button>
+                <el-button v-if="user_id" type="primary" size="small" @click="goSubcribeAuthor">新增订阅作者</el-button>
+                <el-button v-else type="primary" size="small" @click="goAuthorAdd">新增作者</el-button>
             </div>
         </div>
         <el-table :data="authors" :fit="true" :stripe="true">
@@ -35,10 +37,11 @@
 </template>
 
 <script lang="ts">
-    import { Component,Provide,Vue } from 'vue-property-decorator'
+    import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
     import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination } from 'element-ui'
 
-    import {getAuthors,delAuthor} from '@/api/author'
+    import { getAuthors,delAuthor,getUserSubscribeAuthor } from '@/api/author'
+    import { getUser,TypeUser } from '@/api/user'
 
     Vue.use(Row)
     Vue.use(Col)
@@ -67,6 +70,8 @@
        @Provide() authors:Array<Author>=[]
        @Provide() total=0
        @Provide() pageSize=20
+       @Provide() user_id:Number=0
+       @Provide() user:TypeUser|any={}
 
        goAuthorAdd(){
             this.$router.push("/author/add")
@@ -109,17 +114,44 @@
        }
 
        listAuthors(page=1){
-            getAuthors({page}).then(data=>{
-                this.authors=data.data.authors
-                this.total=data.data.total
-            })
+            if(this.user_id){
+                getUserSubscribeAuthor({page,user_id:this.user_id}).then(data=>{
+                    this.authors=data.data.authors
+                    this.total=data.data.total
+                })
+            }else{
+                 getAuthors({page}).then(data=>{
+                    this.authors=data.data.authors
+                    this.total=data.data.total
+                })
+            }
        }
 
        changePage(page){
             this.listAuthors(page)
        }
 
+       goSubcribeAuthor(){
+
+       }
+
+       @Watch('$route')
+       changeRoute(newrouter,currentrouter){
+            if(newrouter.query.user_id){
+                this.user_id=newrouter.query.user_id
+            }else{
+                this.user_id=0
+            }
+            this.listAuthors(1)
+       }
+
        mounted(){
+            if(this.$route.query.user_id){
+                this.user_id=parseInt(this.$route.query.user_id)
+                getUser(this.user_id).then(data=>{
+                    this.user=data.data
+                })
+            }
             this.listAuthors(1)
        }
 

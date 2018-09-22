@@ -1,5 +1,12 @@
 import req from '@/utils/request'
 
+export type TypeUser={
+    id:Number,
+    phone:String,
+    date_add:Number,
+    create_time?:String
+}
+
 // 获取用户列表
 export function getUsers(params={}){
     return req.post(process.env.API_URL+"/api/admin/user",params)

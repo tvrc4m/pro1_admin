@@ -21,23 +21,17 @@
 <script lang="ts">
     import { Component,Provide,Vue } from 'vue-property-decorator'
     import { Form,FormItem,Input,Button } from 'element-ui'
-    import { addUser,getUser,editUser } from '@/api/user'
+    import { addUser,getUser,editUser,TypeUser } from '@/api/user'
 
     Vue.use(Form)
     Vue.use(FormItem)
     Vue.use(Input)
     Vue.use(Button)
 
-    type User={
-        id:Number,
-        phone:String,
-        password:String
-    }
-
     @Component({})
     export default class UserForm extends Vue{
 
-        @Provide() user:User={id:0,phone:'',password:''}
+        @Provide() user:TypeUser|any={}
         @Provide() is_add:Boolean=false
 
         get btnname():String{

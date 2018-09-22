@@ -36,3 +36,7 @@ export function delAuthor(author_id:Number){
 export function allAuthors(){
     return req.post(process.env.API_URL+"/api/admin/author/index/all",{})
 }
+
+export function getUserSubscribeAuthor(params){
+    return req.post(process.env.API_URL+"/api/admin/user/index/author",params)   
+}

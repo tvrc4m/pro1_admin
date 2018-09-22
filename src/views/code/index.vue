@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-    import { Component,Provide,Vue } from 'vue-property-decorator'
+    import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
     import { Row,Col,Button,Table,TableColumn,Message,MessageBox,DatePicker,Dialog,Pagination,Select,Option } from 'element-ui'
 
     import { getCodes,delCode,multiEdit,assginUser,TypeCode } from '@/api/code'
@@ -209,6 +209,18 @@
 
        changePage(page){
             this.filter.page=page
+            this.listCodes()
+       }
+
+       @Watch('$route')
+       changeRoute(newrouter,currentrouter){
+            if(newrouter.query.author_id){
+                this.filter.author_id=newrouter.query.author_id
+            }else{
+                this.filter.author_id=0
+                this.filter.page=1
+                this.author={}
+            }
             this.listCodes()
        }
 

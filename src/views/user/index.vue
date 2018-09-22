@@ -37,7 +37,7 @@
     import { Component,Provide,Vue } from 'vue-property-decorator'
     import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination } from 'element-ui'
 
-    import {getUsers,delUser} from '@/api/user'
+    import { getUsers,delUser,TypeUser } from '@/api/user'
 
     Vue.use(Row)
     Vue.use(Col)
@@ -45,14 +45,7 @@
     Vue.use(Table)
     Vue.use(TableColumn)
     Vue.use(Pagination)
-
-    type User={
-        id:Number,
-        phone:String,
-        date_add:Number,
-        create_time:String
-    }
-
+    
     @Component({
         components:{
             
@@ -61,7 +54,7 @@
     })
     export default class UserIndex extends Vue{
 
-       @Provide() users:Array<User>=[]
+       @Provide() users:Array<TypeUser>=[]
        @Provide() total=0
        @Provide() pageSize=20
 
@@ -95,6 +88,10 @@
 
        sortBySubscribe(a,b){
             console.log(a,b)
+       }
+
+       subscribe(user_id:any){
+            this.$router.push({name:"authorList",query:{user_id}})
        }
 
        listUsers(page=1){

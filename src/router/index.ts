@@ -59,6 +59,7 @@ const routes = [
             {
                 path:"authors",
                 component:AuthorList,
+                name:"authorList",
                 meta:{
                     group:"author"
                 }
