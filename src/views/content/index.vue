@@ -4,7 +4,8 @@
             <span v-if="author.id" class="title">[{{author.name}}]的内容列表</span>
             <span class="title" v-else>内容列表</span>
             <div class="actions">
-                <el-button type="primary" size="small" @click="add">新增内容</el-button>
+                <el-button type="primary" size="small" @click="add">新增</el-button>
+                <el-button type="primary" size="small" @click="multiadd">批量新增</el-button>
             </div>
         </div>
         <el-table :data="contents" :fit="true" :stripe="true">
@@ -15,15 +16,15 @@
                     <span v-else-if="scope.row.type==2">视频</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="url" label="内容" align="center"></el-table-column>
+            <el-table-column prop="url" label="内容"></el-table-column>
             <el-table-column prop="password" label="密码" align="center" width="90px"></el-table-column>
-            <el-table-column v-if="!author.id" prop="author_name" label="作者" align="center"></el-table-column>
+            <el-table-column v-if="!author.id" prop="author_name" label="作者" align="center" width="120px"></el-table-column>
             <el-table-column label="创建时间" align="center" width="180px">
                 <template slot-scope="scope">
                     <span>{{scope.row.create_time}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="180px">
                 <template slot-scope="scope">
                     [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
                     [<el-button type="text" size="mini" @click="edit(scope.row.id)">编辑</el-button>]
@@ -66,6 +67,10 @@
 
        add(){
             this.$router.push({name:"contentAdd",query:{author_id:this.author.id}})
+       }
+
+       multiadd(){
+            this.$router.push({name:"contentMultiAdd",query:{author_id:this.author.id}})
        }
 
        edit(content_id:any){

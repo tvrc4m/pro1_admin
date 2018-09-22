@@ -34,3 +34,8 @@ export function delContent(content_id:Number){
 export function editContent(content:TypeContent){
     return req.post(process.env.API_URL+"/api/admin/content/index/edit",content)
 }
+// 批量添加
+export function multiAddContent(contents){
+    return req.post(process.env.API_URL+"/api/admin/content/index/multiadd",{contents})   
+}
+

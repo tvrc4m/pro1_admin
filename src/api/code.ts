@@ -57,3 +57,8 @@ export function multiEdit(params){
 export function multiAdd(params){
     return req.post(process.env.API_URL+"/api/admin/author/code/multiadd",params)
 }
+
+export function multiDel(codes){
+    return req.post(process.env.API_URL+"/api/admin/author/code/multidel",{codes})    
+}
+

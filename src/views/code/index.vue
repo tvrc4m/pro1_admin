@@ -4,7 +4,8 @@
             <span v-if="author.id" class="title">[{{author.name}}]的邀请码列表</span>
             <span v-else class="title">邀请码列表</span>
             <div class="actions">
-                <el-button type="primary" size="small" @click="changeExpired">批量修改过期日期</el-button>
+                <el-button type="warning" size="small" @click="changeExpired">批量修改过期日期</el-button>
+                <el-button type="danger" size="small" @click="multidel">批量删除</el-button>
                 <el-button type="primary" size="small" @click="add">创建</el-button>
                 <el-button type="primary" size="small" @click="multiadd">批量创建</el-button>
             </div>
@@ -13,13 +14,12 @@
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="ID" width="100px" align="center" :sortable="true"></el-table-column>
             <el-table-column prop="code" label="邀请码" width="160px" align="center"></el-table-column>
-            <el-table-column prop="user_id" label="用户ID" width="160px" align="center">
+            <el-table-column prop="user_phone" label="用户手机号" width="160px" align="center">
                 <template slot-scope="scope">
                     <span v-if="scope.row.user_id>0">{{scope.row.user_id}}</span>
-                    <el-button  v-else type="primary" size="mini" @click="assignUser(scope.row)">分配用户</el-button>
+                    <el-button  v-else type="text" size="mini" @click="assignUser(scope.row)">[分配用户]</el-button>
                 </template>
             </el-table-column>
-            <el-table-column prop="user_phone" label="用户手机号" width="160px" align="center"></el-table-column>
             <el-table-column prop="expired_time" label="过期时间" width="160px" align="center"></el-table-column>
             <el-table-column label="创建时间" align="center" width="180px">
                 <template slot-scope="scope">
@@ -69,7 +69,7 @@
     import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
     import { Row,Col,Button,Table,TableColumn,Message,MessageBox,DatePicker,Dialog,Pagination,Select,Option } from 'element-ui'
 
-    import { getCodes,delCode,multiEdit,assginUser,TypeCode } from '@/api/code'
+    import { getCodes,delCode,multiEdit,multiDel,assginUser,TypeCode } from '@/api/code'
     import { getAuthor,TypeAuthor } from '@/api/author'
     import { searchUser } from '@/api/user'
 
@@ -114,6 +114,27 @@
             this.$router.push({name:"multiAddCode"})
        }
 
+       multidel(){
+            if(this.changed.length>0){
+                MessageBox.confirm("是否要确认删除？","提示",{
+                     showCancelButton:true
+                 }).then(()=>{
+                    multiDel(this.changed).then(data=>{
+                        Message({
+                            type:"success",
+                            message:"删除成功"
+                        })
+                    })
+                    this.listCodes()
+                 })
+            }else{
+                Message({
+                    type:"error",
+                    message:"先选择要删除的数据"
+                })
+            }
+       }
+
        assignUser(code:TypeCode){
             this.assign=true
             this.assign_code=code
@@ -153,6 +174,7 @@
        }
 
        selectChange(val){
+            this.changed=[]
             val.forEach(item=>{
                 this.changed.push(item.id)
             })

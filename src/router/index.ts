@@ -22,6 +22,7 @@ const CodeFormMulti=()=>import('@/views/code/multi')
 // 内容
 const ContentList=()=>import('@/views/content/index')
 const ContentForm=()=>import('@/views/content/form')
+const ContentFormMulti=()=>import('@/views/content/multi')
 
 
 const routes = [
@@ -124,6 +125,14 @@ const routes = [
                 path:"content/add",
                 component:ContentForm,
                 name:"contentAdd",
+                meta:{
+                    group:"content"
+                }
+            },
+            {
+                path:"content/multi",
+                component:ContentFormMulti,
+                name:"contentMultiAdd",
                 meta:{
                     group:"content"
                 }

@@ -14,11 +14,6 @@
                     <span>{{scope.row.create_time}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="订阅的作者" align="center" :sortable="true" :sort-method="sortBySubscribe">
-                <template slot-scope="scope">
-                    <span>查看</span>
-                </template>
-            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
