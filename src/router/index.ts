@@ -25,6 +25,9 @@ const ContentList=()=>import('@/views/content/index')
 const ContentForm=()=>import('@/views/content/form')
 const ContentFormMulti=()=>import('@/views/content/multi')
 
+// 设置
+const settingForm=()=>import('@/views/setting/form')
+
 
 const routes = [
     {
@@ -152,6 +155,14 @@ const routes = [
                 name:"contentEdit",
                 meta:{
                     group:"content"
+                }
+            },
+            {
+                path:"setting",
+                component:settingForm,
+                name:"setting",
+                meta:{
+                    group:"setting"
                 }
             }
         ]

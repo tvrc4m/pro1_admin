@@ -64,6 +64,11 @@
             href:"/code",
             group:"code"
         },
+        {
+            name:"设置",
+            href:"/setting",
+            group:"setting"
+        },
     ]
 
     @Component({})
