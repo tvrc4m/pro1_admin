@@ -6,6 +6,11 @@
             <div class="actions">
                 <el-button type="primary" size="small" @click="add">新增</el-button>
                 <el-button type="primary" size="small" @click="multiadd">批量新增</el-button>
+                <el-tooltip :disabled="disabled" content="只能上传txt格式且编码格式为UTF-8。作者id##内容类型[1,2]##类型链接##内容密码##发布日期[2018-12-1 10:12:11]" placement="bottom" effect="light">
+                    <el-upload style="display: inline-block;" :show-file-list="false" :action="upload_url" :data="upload_data" :on-change="uploadFile" @before-upload="uploadBefore">
+                        <el-button size="small" type="primary">批量上传</el-button>
+                    </el-upload>
+                </el-tooltip>
             </div>
         </div>
         <el-table :data="contents" :fit="true" :stripe="true">
@@ -19,11 +24,8 @@
             <el-table-column prop="url" label="内容"></el-table-column>
             <el-table-column prop="password" label="密码" align="center" width="90px"></el-table-column>
             <el-table-column v-if="!author.id" prop="author_name" label="作者" align="center" width="120px"></el-table-column>
-            <el-table-column label="创建时间" align="center" width="180px">
-                <template slot-scope="scope">
-                    <span>{{scope.row.create_time}}</span>
-                </template>
-            </el-table-column>
+            <el-table-column prop="pub_time" label="发布日期" align="center" width="180px"></el-table-column>
+            <el-table-column prop="create_time" label="创建时间" align="center" width="180px"></el-table-column>
             <el-table-column label="操作" align="center" width="180px">
                 <template slot-scope="scope">
                     [<el-button type="text" size="mini" @click="del(scope.row.id)">删除</el-button>]
@@ -39,7 +41,7 @@
 
 <script lang="ts">
     import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
-    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination } from 'element-ui'
+    import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination,Upload,Tooltip } from 'element-ui'
 
     import { getContents,getContent,delContent,TypeContent } from '@/api/content'
     import { TypeAuthor,getAuthor } from '@/api/author'
@@ -50,6 +52,8 @@
     Vue.use(Table)
     Vue.use(TableColumn)
     Vue.use(Pagination)
+    Vue.use(Upload)
+    Vue.use(Tooltip)
 
     @Component({
         components:{
@@ -64,6 +68,8 @@
        @Provide() filter={author_id:0,page:1}
        @Provide() total=0
        @Provide() pageSize=20
+       @Provide() upload_url=process.env.API_URL+"/api/admin/content/upload/content"
+       @Provide() upload_data={token:localStorage.getItem("token")}
 
        add(){
             this.$router.push({name:"contentAdd",query:{author_id:this.author.id}})
@@ -111,6 +117,34 @@
        changePage(page){
             this.filter.page=page
             this.listContents()
+       }
+
+       uploadFile(file){
+            if(file.status=='success'){
+                if(file.response.err_no!=0){
+                    Message({
+                        type:"error",
+                        message:file.response.err_msg
+                    })
+                }else{
+                    Message({
+                        type:"success",
+                        message:'上传成功'
+                    })
+                    this.listContents()
+                }
+            }
+       }
+
+       uploadBefore(file){
+            if(!/\.txt/.test(file.name)){
+                Message({
+                    type:"error",
+                    message:"只支持txt格式"
+                })
+                return false
+            }
+            return true
        }
 
        @Watch('$route')

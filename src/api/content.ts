@@ -8,6 +8,8 @@ export type TypeContent={
     password:String,
     url:String,
     date_add:Number,
+    date_pub:Number,
+    pub_time:String,
     create_time?:String
 }
 

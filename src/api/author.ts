@@ -7,6 +7,8 @@ export type TypeAuthor={
     avatar:String,
     date_add:Number,
     create_time?:String,
+    ad_img:String,
+    ad_redirect:String,
     codes?:Array<TypeCode>,
 }
 

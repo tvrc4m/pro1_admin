@@ -6,15 +6,22 @@
                 <el-button type="primary" size="small" @click="goAuthorAdd">新增作者</el-button>
             </div>
         </div>
-        <el-table :data="authors" :fit="true" :stripe="true">
-            <el-table-column prop="id" label="ID" width="100px" align="center" :sortable="true"></el-table-column>
-            <el-table-column prop="avatar" label="头像" align="center">
+        <el-table :data="authors" :fit="true" :stripe="true" :sort-change="sortChange">
+            <el-table-column prop="id" label="ID" width="80px" align="center" :sortable="true"></el-table-column>
+            <el-table-column prop="avatar" label="头像" align="center" width="100px">
                 <template slot-scope="scope">
                     <img :src="scope.row.avatar" alt="" style="width: 60px;height: 60px" />
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="作者" align="center"></el-table-column>
-            <el-table-column label="创建时间" align="center" width="180px">
+            <el-table-column prop="name" label="作者" align="center" :filters="filter_authors"></el-table-column>
+            <el-table-column label="广告图片" align="center" width="100px">
+                <template slot-scope="scope">
+                    <img :src="scope.row.ad_img" alt="" style="width:60px;height:60px">
+                </template>
+            </el-table-column>
+            <el-table-column prop="ad_redirect" label="广告跳转链接" align="center" :filters="filter_authors"></el-table-column>
+            <el-table-column prop="unused_count" label="剩余订阅码" align="center" width="120px;"></el-table-column>
+            <el-table-column label="创建时间" align="center" width="170px">
                 <template slot-scope="scope">
                     <span>{{scope.row.create_time}}</span>
                 </template>
@@ -38,7 +45,7 @@
     import { Component,Provide,Watch,Vue } from 'vue-property-decorator'
     import { Row,Col,Button,Table,TableColumn,Message,MessageBox,Pagination } from 'element-ui'
 
-    import { getAuthors,delAuthor,getUserSubscribeAuthor } from '@/api/author'
+    import { getAuthors,delAuthor,getUserSubscribeAuthor,TypeAuthor,allAuthors } from '@/api/author'
     import { getUser,TypeUser } from '@/api/user'
 
     Vue.use(Row)
@@ -48,15 +55,6 @@
     Vue.use(TableColumn)
     Vue.use(Pagination)
 
-    type Author={
-        id:Number,
-        name:String,
-        avatar:String,
-        status:Number,
-        date_add:Number,
-        create_time:String
-    }
-
     @Component({
         components:{
             
@@ -65,11 +63,12 @@
     })
     export default class AuthorIndex extends Vue{
 
-       @Provide() authors:Array<Author>=[]
+       @Provide() authors:Array<TypeAuthor>=[]
        @Provide() total=0
        @Provide() pageSize=20
        @Provide() user_id:Number=0
        @Provide() user:TypeUser|any={}
+       @Provide() filter_authors:Array<{text:String,value:Number}>=[]
 
        goAuthorAdd(){
             this.$router.push("/author/add")
@@ -126,6 +125,10 @@
 
        }
 
+       sortChange(prop){
+            
+       }
+
        @Watch('$route')
        changeRoute(newrouter,currentrouter){
             if(newrouter.query.user_id){
@@ -138,6 +141,13 @@
 
        mounted(){
             this.listAuthors(1)
+
+            allAuthors().then(data=>{
+                console.log(data)
+                data.data.forEach(item=>{
+                    this.filter_authors.push({text:item.name,value:item.id})
+                })
+            })
        }
 
     }

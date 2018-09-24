@@ -5,21 +5,18 @@
             <div class="actions">
             </div>
         </div>
-        <el-form ref="author" :model="author" :inline="true" label-width="100px">
+        <el-form ref="author" :model="author" :inline="true" label-width="160px">
             <el-form-item label="作者名" prop="name" width="200px" style="display: block;">
-                <el-input type="text" v-model="author.name" autocomplete="off" style="width: 260px;"></el-input>
+                <el-input type="text" v-model="author.name" autocomplete="off" style="width: 500px;"></el-input>
             </el-form-item>
-            <el-form-item label="头像" prop="avatar" style="display: block;">
-                <el-upload
-                  class="avatar-uploader"
-                  :action="upload_url"
-                  :show-file-list="false"
-                  :data="upload_data"
-                  :on-success="uploadSuccess"
-                  :before-upload="uploadBefore">
-                  <img v-if="author.avatar" :src="author.avatar" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
+            <el-form-item label="头像地址" prop="avatar" style="display: block;">
+                <el-input type="text" v-model="author.avatar" style="width: 500px;"></el-input>
+            </el-form-item>
+            <el-form-item label="广告图片地址" prop="ad_img" style="display:block">
+                <el-input type="text" v-model="author.ad_img" style="width:500px"></el-input>
+            </el-form-item>
+            <el-form-item label="广告跳转地址" prop="ad_redirect" style="display:block">
+                <el-input type="text" v-model="author.ad_redirect" style="width:500px"></el-input>
             </el-form-item>
             <div style="margin-left: 120px;">
                 <el-button type="primary" size="small" @click="add">{{btnname}}</el-button>

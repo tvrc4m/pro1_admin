@@ -19,6 +19,9 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="发布日期" style="display: block;">
+                        <el-date-picker format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" v-model="content.pub_time" type="datetime" placeholder="发布日期"></el-date-picker>
+                    </el-form-item>
                     <el-form-item label="内容链接" style="display: block;">
                         <el-input type="text" v-model="content.url" autocomplete="off" style="width: 460px;"></el-input>
                     </el-form-item>
