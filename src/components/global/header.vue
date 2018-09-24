@@ -23,6 +23,9 @@
             <div v-else class="action loading-wrapper">
                 <div class="loading" v-loading="true"></div>
             </div> -->
+            <div class="actions">
+                <span class="action" @click="logout">退出</span>
+            </div>
         </div>
     </div>
 </template>
@@ -75,6 +78,11 @@
     export default class GlobalHeader extends Vue{
 
         @Provide() actions=actions
+
+        logout(){
+            localStorage.removeItem('token')
+            this.$router.push('/user/login')
+        }
 
         mounted(){
             
@@ -154,7 +162,7 @@
                 background: transparent;
             }
         }
-        .left{
+        .left,.right{
             height: 100%;
             display: flex;
             align-items: center;
