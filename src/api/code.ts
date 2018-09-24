@@ -70,4 +70,7 @@ export function unassign(uid:Number,code_id:Number){
     return req.post(process.env.API_URL+"/api/admin/author/code/unassign",{uid,code_id})     
 }
 
+export function clearExpiredCode(){
+    return req.post(process.env.API_URL+"/api/admin/author/code/clearexpired",{})   
+}
 

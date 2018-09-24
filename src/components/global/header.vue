@@ -39,6 +39,11 @@
 
     const actions=[
         {
+            name:"首页",
+            href:"/",
+            group:"home"
+        },
+        {
             name:"用户",
             href:"/users",
             group:"user"
