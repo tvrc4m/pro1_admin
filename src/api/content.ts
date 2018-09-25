@@ -7,6 +7,7 @@ export type TypeContent={
     type:Number,
     password:String,
     url:String,
+    description:String,
     date_add:Number,
     date_pub:Number,
     pub_time:String,

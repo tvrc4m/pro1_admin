@@ -23,6 +23,7 @@
             </el-table-column>
             <el-table-column prop="url" label="内容"></el-table-column>
             <el-table-column prop="password" label="密码" align="center" width="90px"></el-table-column>
+            <el-table-column prop="description" :show-overflow-tooltip="true" label="描述" align="center"></el-table-column>
             <el-table-column v-if="!author.id" prop="author_name" label="作者" align="center" width="120px"></el-table-column>
             <el-table-column prop="pub_time" label="发布日期" align="center" width="180px"></el-table-column>
             <el-table-column prop="create_time" label="创建时间" align="center" width="180px"></el-table-column>

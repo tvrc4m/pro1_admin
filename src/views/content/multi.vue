@@ -28,6 +28,9 @@
                     <el-form-item label="内容加密字符串" style="display: block;">
                         <el-input type="text" v-model="content.password" autocomplete="off" style="width: 260px;"></el-input>
                     </el-form-item>
+                    <el-form-item label="内容描述" style="display: block;">
+                        <el-input type="textarea" v-model="content.description" :autosize="true" autocomplete="off" style="width: 460px;"></el-input>
+                    </el-form-item>
                 </el-tab-pane>
             </el-tabs>
             <div style="margin-left:200px;">
