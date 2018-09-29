@@ -6,7 +6,7 @@
             <div class="actions">
                 <el-button type="primary" size="small" @click="add">新增</el-button>
                 <el-button type="primary" size="small" @click="multiadd">批量新增</el-button>
-                <el-tooltip :disabled="disabled" content="只能上传txt格式且编码格式为UTF-8。作者id##内容类型[1,2]##类型链接##内容密码##发布日期[2018-12-1 10:12:11]" placement="bottom" effect="light">
+                <el-tooltip :disabled="disabled" content="只能上传txt格式且编码格式为UTF-8。作者id##内容类型[1,2]##类型链接##内容密码##内容描述##发布日期[2018-12-1 10:12:11]" placement="bottom" effect="light">
                     <el-upload style="display: inline-block;" :show-file-list="false" :action="upload_url" :data="upload_data" :on-change="uploadFile" @before-upload="uploadBefore">
                         <el-button size="small" type="primary">批量上传</el-button>
                     </el-upload>
@@ -35,7 +35,7 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+            <el-pagination background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
         </div>
     </div>
 </template>

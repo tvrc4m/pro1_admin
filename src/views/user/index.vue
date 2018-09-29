@@ -23,7 +23,7 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+            <el-pagination background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
         </div>
     </div>
 </template>

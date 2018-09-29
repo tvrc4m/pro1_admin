@@ -20,6 +20,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="ad_redirect" label="广告跳转链接" align="center" :filters="filter_authors"></el-table-column>
+            <el-table-column prop="content_count" label="内容数量" align="center" width="120px;"></el-table-column>
             <el-table-column prop="unused_count" label="剩余订阅码" align="center" width="120px;"></el-table-column>
             <el-table-column label="创建时间" align="center" width="170px">
                 <template slot-scope="scope">
@@ -36,7 +37,7 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+            <el-pagination background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
         </div>
     </div>
 </template>

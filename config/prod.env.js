@@ -1,6 +1,6 @@
 'use strict'
 module.exports = {
     NODE_ENV: '"production"',
-    BASE_URL: '"/oa/"',
+    BASE_URL: '"/"',
     API_URL: '"index.php"',
 }

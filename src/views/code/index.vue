@@ -44,7 +44,7 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination v-if="total>pageSize" background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
+            <el-pagination background @current-change="changePage" :page-size="pageSize" layout="pager,total" :total="total"></el-pagination>
         </div>
         <el-dialog title="批量修改过期日期" :visible.sync="multiedit" width="30%">
             <el-date-picker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="date_expired" type="date" placeholder="选择日期" style="width: 100%"></el-date-picker>

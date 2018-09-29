@@ -10,6 +10,8 @@ export type TypeAuthor={
     ad_img:String,
     ad_redirect:String,
     codes?:Array<TypeCode>,
+    content_count?:Number,
+    unused_count?:Number,
 }
 
 // 获取用户列表
